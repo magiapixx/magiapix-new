@@ -22,12 +22,16 @@ export const Route = createFileRoute('/our-works/$slug')({
 });
 
 function ProjectPage() {
-  const { project, next } = Route.useLoaderData();
+  const { slug } = Route.useParams();
+  const index = projects.findIndex((p) => p.slug === slug);
+  if (index === -1) return null;
+  const project = projects[index];
+  const next = projects[(index + 1) % projects.length];
   return (
     <main>
       <section className="detail-intro shell">
         <BackLink to="/our-works">All projects</BackLink>
-        <span className="eyebrow">/ {project.category.toUpperCase()}</span>
+        <span className="eyebrow">/ {(project.category ?? '').toUpperCase()}</span>
         <h1>
           {project.name}
           <span className="detail-period">.</span>
