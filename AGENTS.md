@@ -8,3 +8,7 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep site copy, project concept studies, and journal articles in a shared content module so listing and detail routes remain consistent.
+- Use separate TanStack routes for each major site page and dynamic slugs for project/article details so content is shareable and discoverable.
+- Treat generated work imagery and project names as clearly labeled concept studies, not evidence of commissioned clients or measured results.
