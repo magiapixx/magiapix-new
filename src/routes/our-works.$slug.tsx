@@ -4,16 +4,16 @@ import { projects } from '@/lib/content';
 
 export const Route = createFileRoute('/our-works/$slug')({
   loader: ({ params }) => {
-    const index = projects.findIndex((p) => p.slug === params.slug);
-    if (index === -1) throw notFound();
-    return { project: projects[index], next: projects[(index + 1) % projects.length] };
+    const project = projects.find((p) => p.slug === params.slug);
+    if (!project) throw notFound();
+    return { name: project.name, summary: project.summary };
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: loaderData ? `${loaderData.project.name} | Magiapix Works` : 'Project Not Found | Magiapix' },
-      { name: 'description', content: loaderData?.project.summary || 'Explore Magiapix creative digital work.' },
-      { property: 'og:title', content: loaderData ? `${loaderData.project.name} | Magiapix Works` : 'Project Not Found | Magiapix' },
-      { property: 'og:description', content: loaderData?.project.summary || 'Explore Magiapix creative digital work.' },
+      { title: loaderData ? `${loaderData.name} | Magiapix Works` : 'Project Not Found | Magiapix' },
+      { name: 'description', content: loaderData?.summary || 'Explore Magiapix creative digital work.' },
+      { property: 'og:title', content: loaderData ? `${loaderData.name} | Magiapix Works` : 'Project Not Found | Magiapix' },
+      { property: 'og:description', content: loaderData?.summary || 'Explore Magiapix creative digital work.' },
       { property: 'og:type', content: 'article' },
       { name: 'twitter:card', content: 'summary_large_image' },
     ],
@@ -22,12 +22,16 @@ export const Route = createFileRoute('/our-works/$slug')({
 });
 
 function ProjectPage() {
-  const { project, next } = Route.useLoaderData();
+  const { slug } = Route.useParams();
+  const index = projects.findIndex((p) => p.slug === slug);
+  const project = projects[index];
+  const next = projects[(index + 1) % projects.length];
+  if (!project || !next) return null;
   return (
     <main>
       <section className="detail-intro shell">
         <BackLink to="/our-works">All projects</BackLink>
-        <span className="eyebrow">/ {project.category.toUpperCase()}</span>
+        <span className="eyebrow">/ {(project.category ?? '').toUpperCase()}</span>
         <h1>
           {project.name}
           <span className="detail-period">.</span>
@@ -87,7 +91,7 @@ function ProjectPage() {
       </div>
 
       <section className="shell detail-language">
-        <span className="eyebrow">/ A VISUAL LANGUAGE OF {project.name.split(' ')[0].toUpperCase()}</span>
+        <span className="eyebrow">/ A VISUAL LANGUAGE OF {(project.name.split(' ')[0] ?? '').toUpperCase()}</span>
         <div className="detail-language-grid">
           <div className="detail-palette">
             {project.palette.map((color) => (
