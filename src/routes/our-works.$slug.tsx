@@ -91,7 +91,7 @@ function ProjectPage() {
       </div>
 
       <section className="shell detail-language">
-        <span className="eyebrow">/ A VISUAL LANGUAGE OF {project.name.split(' ')[0].toUpperCase()}</span>
+        <span className="eyebrow">/ A VISUAL LANGUAGE OF {(project.name.split(' ')[0] ?? '').toUpperCase()}</span>
         <div className="detail-language-grid">
           <div className="detail-palette">
             {project.palette.map((color) => (
