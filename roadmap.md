@@ -1,0 +1,4 @@
+- [x] Read Magiapix design prompt and website copy.
+- [x] Build distinct Home, Services, Our Works, project detail, About Us, Blog, and blog detail pages.
+- [x] Add cohesive imagery, navigation, responsive layouts, and page metadata.
+- [ ] Verify pages and navigation in the preview.
