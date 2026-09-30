@@ -14,7 +14,9 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as OurWorksRouteImport } from './routes/our-works'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as OurWorksIndexRouteImport } from './routes/our-works.index'
 import { Route as OurWorksSlugRouteImport } from './routes/our-works.$slug'
 
 const IndexRoute = IndexRouteImport.update({
@@ -42,10 +44,20 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => BlogRoute,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => BlogRoute,
+} as any)
+const OurWorksIndexRoute = OurWorksIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => OurWorksRoute,
 } as any)
 const OurWorksSlugRoute = OurWorksSlugRouteImport.update({
   id: '/$slug',
@@ -61,15 +73,17 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/our-works/$slug': typeof OurWorksSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/our-works/': typeof OurWorksIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/blog': typeof BlogRouteWithChildren
-  '/our-works': typeof OurWorksRouteWithChildren
   '/services': typeof ServicesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/our-works/$slug': typeof OurWorksSlugRoute
+  '/blog': typeof BlogIndexRoute
+  '/our-works': typeof OurWorksIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +94,8 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/our-works/$slug': typeof OurWorksSlugRoute
+  '/blog/': typeof BlogIndexRoute
+  '/our-works/': typeof OurWorksIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,15 +107,17 @@ export interface FileRouteTypes {
     | '/services'
     | '/blog/$slug'
     | '/our-works/$slug'
+    | '/blog/'
+    | '/our-works/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/blog'
-    | '/our-works'
     | '/services'
     | '/blog/$slug'
     | '/our-works/$slug'
+    | '/blog'
+    | '/our-works'
   id:
     | '__root__'
     | '/'
@@ -109,6 +127,8 @@ export interface FileRouteTypes {
     | '/services'
     | '/blog/$slug'
     | '/our-works/$slug'
+    | '/blog/'
+    | '/our-works/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -156,12 +176,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof BlogRoute
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
+    }
+    '/our-works/': {
+      id: '/our-works/'
+      path: '/'
+      fullPath: '/our-works/'
+      preLoaderRoute: typeof OurWorksIndexRouteImport
+      parentRoute: typeof OurWorksRoute
     }
     '/our-works/$slug': {
       id: '/our-works/$slug'
@@ -175,20 +209,24 @@ declare module '@tanstack/react-router' {
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 const BlogRouteChildren: BlogRouteChildren = {
   BlogSlugRoute: BlogSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 interface OurWorksRouteChildren {
   OurWorksSlugRoute: typeof OurWorksSlugRoute
+  OurWorksIndexRoute: typeof OurWorksIndexRoute
 }
 
 const OurWorksRouteChildren: OurWorksRouteChildren = {
   OurWorksSlugRoute: OurWorksSlugRoute,
+  OurWorksIndexRoute: OurWorksIndexRoute,
 }
 
 const OurWorksRouteWithChildren = OurWorksRoute._addFileChildren(
