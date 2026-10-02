@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ClosingCTA from '../components/site/ClosingCTA.astro';
+import Icon from '../components/site/Icon.astro';
+import JournalGrid from '../components/site/JournalGrid.astro';
+import SectionHeading from '../components/site/SectionHeading.astro';
+import WorkGrid from '../components/site/WorkGrid.astro';
+import heroImage from '../assets/hero-coast.jpg';
+import formImage from '../assets/work-form.jpg';
+import objectsImage from '../assets/work-objects.jpg';
+---
+
+<BaseLayout>
+  <main>
+    <section class="home-hero">
+      <img class="hero-image" src={heroImage.src} alt="Sculptural architecture on a dramatic rocky coastline" width="1920" height="1104" />
+      <div class="hero-shade"></div>
+      <div class="shell hero-content">
+        <div class="hero-bottom">
+          <div>
+            <h1>Where ambitious brands<br /><em>become unforgettable.</em></h1>
+            <span class="hero-caption">© MAGIAPIX — DIGITAL EXPERIENCES WITH CHARACTER</span>
+          </div>
+          <p>Magiapix is a digital agency crafting creative websites that visualize your brand with clarity, character, and impact.</p>
+        </div>
+      </div>
+      <a class="hero-scroll" href="#introduction" aria-label="Scroll to introduction"><Icon name="arrow-down" size={17} /></a>
+    </section>
+    <section class="intro-section section-pad" id="introduction">
+      <div class="shell">
+        <span class="eyebrow">/ ABOUT MAGIAPIX</span>
+        <div class="intro-copy">
+          <p>Your brand is more than a logo. It's a story, a standard, and a promise.</p>
+          <strong>We turn it into a digital experience that looks as premium as your business is.</strong>
+          <a href="/about" class="text-link">Meet the studio <Icon name="arrow-right" size={17} /></a>
+        </div>
+      </div>
+    </section>
+    <section class="proof-section">
+      <div class="shell proof-grid">
+        <div class="proof-copy">
+          <span class="eyebrow">/ WHAT WE BELIEVE</span>
+          <h2>Premium is in <em>the details.</em></h2>
+          <p>We focus on creative web development and brand visualization, shaping digital spaces where every detail reflects the quality of the business behind it.</p>
+          <div class="proof-list">
+            <div><span>01</span><p>Specialized, not scattered.</p></div>
+            <div><span>02</span><p>Design meets performance.</p></div>
+            <div><span>03</span><p>Built for ambition.</p></div>
+          </div>
+          <a href="/services" class="text-link">How we work <Icon name="arrow-right" size={17} /></a>
+        </div>
+        <div class="proof-visuals">
+          <img src={formImage.src} alt="Sculptural metal and glass study" loading="lazy" />
+          <img src={objectsImage.src} alt="Abstract objects and material study" loading="lazy" />
+        </div>
+      </div>
+    </section>
+    <section class="section-pad">
+      <div class="shell">
+        <SectionHeading label="SELECTED WORK" title="Made to be felt." link="/our-works" linkText="All projects" />
+        <WorkGrid limit={3} />
+        <p class="concept-note">Selected visual concept studies created for this site; not commissioned client projects.</p>
+      </div>
+    </section>
+    <section class="services-preview section-pad">
+      <div class="shell">
+        <SectionHeading label="OUR CAPABILITIES" title="What we do best." link="/services" linkText="Explore services" />
+        <div class="service-lines">
+          <a href="/services"><span>Creative Web Development</span><Icon name="arrow-right" /></a>
+          <a href="/services"><span>Brand Visualization</span><Icon name="arrow-right" /></a>
+          <a href="/services"><span>Business Website Design</span><Icon name="arrow-right" /></a>
+          <a href="/services"><span>Digital Experience &amp; Motion</span><Icon name="arrow-right" /></a>
+        </div>
+      </div>
+    </section>
+    <section class="section-pad">
+      <div class="shell">
+        <SectionHeading label="THE JOURNAL" title="Notes from the studio." link="/blog" linkText="All stories" />
+        <JournalGrid limit={2} />
+      </div>
+    </section>
+    <ClosingCTA />
+  </main>
+</BaseLayout>

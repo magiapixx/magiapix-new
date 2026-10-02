@@ -1,0 +1,41 @@
+---
+import { projects } from '../../lib/content';
+import Icon from './Icon.astro';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+const visibleProjects = limit === undefined ? projects : projects.slice(0, limit);
+---
+
+<div class="work-grid">
+  {visibleProjects.map((project, index) => (
+    <a
+      href={`/our-works/${project.slug}`}
+      class={`work-item work-item--${index}`}
+    >
+      <div class="work-image work-preview">
+        {[project.image, ...project.gallery]
+          .filter((image, imageIndex, images) => images.findIndex((item) => item.src === image.src) === imageIndex)
+          .slice(0, 3)
+          .map((image, imageIndex) => (
+            <img
+              class:list={['work-preview__image', imageIndex === 0 && 'work-preview__image--first']}
+              src={image.src}
+              alt={imageIndex === 0 ? `${project.name} visual concept` : ''}
+              loading="lazy"
+              decoding="async"
+              style={`--preview-index: ${imageIndex}`}
+            />
+          ))}
+        <span class="work-overlay"><span>VIEW PROJECT <Icon name="arrow-right" size={16} /></span></span>
+      </div>
+      <div class="work-meta">
+        <div><h3>{project.name}</h3><p>{project.category}</p></div>
+        <Icon name="arrow-right" size={18} />
+      </div>
+    </a>
+  ))}
+</div>

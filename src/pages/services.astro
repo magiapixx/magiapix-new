@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ClosingCTA from '../components/site/ClosingCTA.astro';
+import SectionHeading from '../components/site/SectionHeading.astro';
+import { services } from '../lib/content';
+---
+
+<BaseLayout
+  title="Services | Magiapix"
+  description="Creative web development, brand visualization, business website design, and digital experience by Magiapix."
+>
+  <main>
+    <section class="page-intro shell">
+      <span class="eyebrow">/ OUR SERVICES</span>
+      <h1>What we <em>do best.</em></h1>
+      <p>We design and build refined digital spaces where every detail, from typography to motion, reflects the quality of the brand behind it.</p>
+    </section>
+    <section class="shell services-list">
+      {services.map((service) => (
+        <article class="service-row">
+          <div class="service-image"><img src={service.image.src} alt={service.alt} loading="lazy" /></div>
+          <div class="service-copy"><span class="eyebrow">/ CAPABILITY</span><h2>{service.name}</h2><p>{service.description}</p></div>
+        </article>
+      ))}
+    </section>
+    <section class="section-pad process-band">
+      <div class="shell">
+        <SectionHeading label="OUR PROCESS" title="From vision to live." />
+        <div class="process-grid">
+          {[
+            ['01', 'Discover', 'We learn your brand, goals, and audience.'],
+            ['02', 'Design', 'We shape a visual direction that captures your identity.'],
+            ['03', 'Develop', 'We build a responsive, high-performance website.'],
+            ['04', 'Deliver', 'We launch with care and support you beyond go-live.'],
+          ].map(([number, title, text]) => (
+            <div class="process-step"><span class="eyebrow">{number}</span><h3>{title}</h3><p>{text}</p></div>
+          ))}
+        </div>
+      </div>
+    </section>
+    <ClosingCTA />
+  </main>
+</BaseLayout>

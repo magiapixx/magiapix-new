@@ -104,3 +104,14 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+This project uses Astro for routing and static page rendering. Site pages and
+shared layouts live in `src/pages` and `src/layouts`; project and journal
+details use static dynamic routes. Existing React UI components remain available
+through the Astro React integration and can be hydrated as islands when needed.
+
+```sh
+npm run check
+npm run build
+npm run preview
+```

@@ -1,0 +1,80 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  pathname: string;
+}
+
+const { pathname } = Astro.props;
+const activeLink = pathname.startsWith('/our-works')
+  ? '/our-works'
+  : pathname.startsWith('/blog')
+    ? '/blog'
+    : pathname === '/about'
+      ? '/about'
+      : pathname === '/services'
+        ? '/services'
+        : pathname === '/'
+          ? '/'
+        : '';
+---
+
+<header
+  class:list={['site-header', pathname === '/' ? 'site-header--hero' : 'site-header--solid']}
+  data-hero={String(pathname === '/')}
+>
+  <div class="shell header-inner">
+    <a href="/" class="brand" aria-label="Magiapix home">magiapix<span class="brand-period">.</span></a>
+    <nav class="site-nav" aria-label="Main navigation" id="site-navigation">
+      <a href="/" class:nav-active={activeLink === '/'}>Home</a>
+      <a href="/services" class:nav-active={activeLink === '/services'}>Services</a>
+      <a href="/our-works" class:nav-active={activeLink === '/our-works'}>Our Works</a>
+      <a href="/about" class:nav-active={activeLink === '/about'}>About Us</a>
+      <a href="/blog" class:nav-active={activeLink === '/blog'}>Journal</a>
+      <a class="studio-button" href="mailto:hello@magiapix.com?subject=Project%20enquiry">
+        Start a project <Icon name="arrow-right" size={14} />
+      </a>
+    </nav>
+    <button
+      class="mobile-menu"
+      type="button"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="site-navigation"
+      data-menu-toggle
+    >
+      <span data-menu-icon="open"><Icon name="menu" size={22} /></span>
+      <span data-menu-icon="close" hidden><Icon name="close" size={22} /></span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const updateHeader = () => {
+    const header = document.querySelector<HTMLElement>('.site-header');
+    const menu = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+    if (header?.dataset.hero === 'true') {
+      header.classList.toggle('site-header--hero', window.scrollY <= 48 && menu?.getAttribute('aria-expanded') !== 'true');
+      header.classList.toggle('site-header--solid', window.scrollY > 48 || menu?.getAttribute('aria-expanded') === 'true');
+    }
+  };
+
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const menu = event.target.closest<HTMLButtonElement>('[data-menu-toggle]');
+    if (!menu) return;
+
+    const isOpen = menu.getAttribute('aria-expanded') === 'true';
+    menu.setAttribute('aria-expanded', String(!isOpen));
+    menu.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
+    document.querySelector<HTMLElement>('#site-navigation')?.classList.toggle('site-nav--open', !isOpen);
+    const openIcon = menu.querySelector<HTMLElement>('[data-menu-icon="open"]');
+    const closeIcon = menu.querySelector<HTMLElement>('[data-menu-icon="close"]');
+    if (openIcon) openIcon.hidden = !isOpen;
+    if (closeIcon) closeIcon.hidden = isOpen;
+    updateHeader();
+  });
+
+  window.addEventListener('scroll', updateHeader, { passive: true });
+  document.addEventListener('astro:page-load', updateHeader);
+</script>

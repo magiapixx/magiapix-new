@@ -1,0 +1,17 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  label: string;
+  title: string;
+  link?: '/our-works' | '/services' | '/blog' | '/about';
+  linkText?: string;
+}
+
+const { label, title, link, linkText = 'Explore all' } = Astro.props;
+---
+
+<div class="section-heading">
+  <div><span class="eyebrow">/ {label}</span><h2>{title}</h2></div>
+  {link && <a class="text-link" href={link}>{linkText} <Icon name="arrow-right" size={17} /></a>}
+</div>

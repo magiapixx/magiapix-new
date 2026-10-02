@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ClosingCTA from '../components/site/ClosingCTA.astro';
+import Icon from '../components/site/Icon.astro';
+import SectionHeading from '../components/site/SectionHeading.astro';
+import heroImage from '../assets/hero-coast.jpg';
+import formImage from '../assets/work-form.jpg';
+---
+
+<BaseLayout
+  title="About Us | Magiapix"
+  description="Magiapix is a creative web development agency specializing in digital brand and business visualization for ambitious brands."
+>
+  <main>
+    <section class="page-intro shell">
+      <span class="eyebrow">/ ABOUT MAGIAPIX</span>
+      <h1>Digital craft for brands <em>that aim higher.</em></h1>
+      <p>Magiapix is a creative web development agency that specializes in digital brand and business visualization.</p>
+    </section>
+    <div class="about-wide-image"><img src={heroImage.src} alt="Atmospheric coastline and sculptural architecture" /></div>
+    <section class="shell about-statement section-pad">
+      <span class="eyebrow">/ OUR POINT OF VIEW</span>
+      <div>
+        <h2>How you show up online shapes how the world values you.</h2>
+        <p>We work with ambitious brands that know their digital presence should reflect the quality of what they do. We don't build generic websites. We design and develop refined, high-performing digital spaces where every detail, from typography to motion, reflects the brand behind it.</p>
+      </div>
+    </section>
+    <section class="about-principles section-pad">
+      <div class="shell about-principles-grid">
+        <div>
+          <SectionHeading label="WHY MAGIAPIX" title="Premium is in the details." />
+          <div class="principle"><h3>Specialized, not scattered.</h3><p>We focus on creative web development and brand visualization, and do it exceptionally well.</p></div>
+          <div class="principle"><h3>Built for ambition.</h3><p>We partner with brands that want to lead their category, not blend into it.</p></div>
+          <div class="principle"><h3>Design meets performance.</h3><p>Beautiful on the surface, engineered underneath for speed, stability, and growth.</p></div>
+          <div class="principle"><h3>A collaborative process.</h3><p>You're involved at every step, and nothing is left to guesswork.</p></div>
+          <a class="text-link" href="/services">Explore our services <Icon name="arrow-right" size={17} /></a>
+        </div>
+        <img src={formImage.src} alt="Material and form study" loading="lazy" />
+      </div>
+    </section>
+    <ClosingCTA />
+  </main>
+</BaseLayout>

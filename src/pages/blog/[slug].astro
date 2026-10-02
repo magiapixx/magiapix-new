@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackLink from '../../components/site/BackLink.astro';
+import ClosingCTA from '../../components/site/ClosingCTA.astro';
+import { articles } from '../../lib/content';
+
+export function getStaticPaths() {
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+---
+
+<BaseLayout
+  title={`${article.title} | Magiapix Journal`}
+  description={article.excerpt}
+  type="article"
+>
+  <main>
+    <section class="detail-intro article-intro shell">
+      <BackLink href="/blog">All stories</BackLink>
+      <span class="eyebrow">/ {article.category.toUpperCase()} · {article.read.toUpperCase()}</span>
+      <h1>{article.title}</h1>
+      <p>{article.excerpt}</p>
+      <span class="article-date">MAGIAPIX JOURNAL · {article.date.toUpperCase()}</span>
+    </section>
+    <div class="article-hero-image"><img src={article.image.src} alt="Editorial visual for article" /></div>
+    <article class="article-body shell">{article.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</article>
+    <div class="shell article-end"><BackLink href="/blog">Back to journal</BackLink></div>
+    <ClosingCTA />
+  </main>
+</BaseLayout>

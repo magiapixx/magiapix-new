@@ -1,0 +1,11 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  href: '/blog' | '/our-works';
+}
+
+const { href } = Astro.props;
+---
+
+<a href={href} class="back-link"><Icon name="arrow-left" size={16} /><slot /></a>

@@ -1,0 +1,22 @@
+---
+import { articles } from '../../lib/content';
+import Icon from './Icon.astro';
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+const visibleArticles = limit === undefined ? articles : articles.slice(0, limit);
+---
+
+<div class="journal-grid">
+  {visibleArticles.map((article) => (
+    <a href={`/blog/${article.slug}`} class="journal-item">
+      <div class="journal-image"><img src={article.image.src} alt="" loading="lazy" /></div>
+      <div class="journal-meta"><span>{article.category}</span><span>{article.date}</span></div>
+      <h3>{article.title}</h3>
+      <span class="text-link">Read story <Icon name="arrow-right" size={16} /></span>
+    </a>
+  ))}
+</div>

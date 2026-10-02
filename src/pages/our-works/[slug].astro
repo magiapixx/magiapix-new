@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BackLink from '../../components/site/BackLink.astro';
+import ClosingCTA from '../../components/site/ClosingCTA.astro';
+import MotionShowcase from '../../components/site/MotionShowcase.astro';
+import { projects } from '../../lib/content';
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const index = projects.findIndex((item) => item.slug === project.slug);
+const next = projects[(index + 1) % projects.length];
+---
+
+<BaseLayout
+  title={`${project.name} | Magiapix Works`}
+  description={project.summary}
+  type="article"
+>
+  <main>
+    <section class="detail-intro shell">
+      <BackLink href="/our-works">All projects</BackLink>
+      <span class="eyebrow">/ {project.category.toUpperCase()}</span>
+      <h1>{project.name}<span class="detail-period">.</span></h1>
+      <p>{project.tagline}</p>
+    </section>
+    <div class="detail-hero-image"><img src={project.image.src} alt={`${project.name} visual direction`} /></div>
+    <section class="shell detail-content">
+      <div class="detail-aside">
+        <span class="eyebrow">PROJECT DETAILS</span>
+        <dl>
+          <dt>TYPE</dt><dd>Visual concept study</dd>
+          <dt>SCOPE</dt><dd>{project.scope}</dd>
+          <dt>YEAR</dt><dd>{project.year}</dd>
+          <dt>DELIVERABLES</dt>
+          <dd><ul class="detail-deliverables">{project.deliverables.map((item) => <li>{item}</li>)}</ul></dd>
+        </dl>
+      </div>
+      <div class="detail-story">
+        <h2>{project.summary}</h2>
+        <div><span class="eyebrow">/ THE QUESTION</span><p>{project.challenge}</p></div>
+        <div><span class="eyebrow">/ THE DIRECTION</span><p>{project.approach}</p></div>
+      </div>
+    </section>
+    <section class="shell detail-gallery">
+      <div class="detail-gallery-grid">
+        {project.gallery.map((image, imageIndex) => (
+          <figure><img src={image.src} alt={`${project.name} study ${imageIndex + 1}`} /></figure>
+        ))}
+      </div>
+    </section>
+    <section class="shell detail-motion-showcase">
+      <MotionShowcase
+        title={project.name}
+        images={[project.image, ...project.gallery, project.wideImage]}
+      />
+    </section>
+    <div class="detail-wide-image"><img src={project.wideImage.src} alt={`${project.name} atmosphere`} /></div>
+    <section class="shell detail-language">
+      <span class="eyebrow">/ A VISUAL LANGUAGE OF {project.name.split(' ')[0].toUpperCase()}</span>
+      <div class="detail-language-grid">
+        <div class="detail-palette">
+          {project.palette.map((color) => (
+            <div class="detail-swatch">
+              <span class="detail-swatch-color" style={`background-color: ${color.hex}`} />
+              <span class="detail-swatch-name">{color.name}</span>
+              <span class="detail-swatch-hex">{color.hex}</span>
+            </div>
+          ))}
+        </div>
+        <p class="detail-language-note">Every color, typeface, and image treatment in this concept was chosen to express the character of the brand before a single word is read.</p>
+      </div>
+    </section>
+    <section class="detail-keywords">
+      <div class="shell">
+        {project.keywords.map((word, keywordIndex) => (
+          <span class:list={['detail-keyword', keywordIndex % 2 === 1 && 'detail-keyword--alt']}>{word}</span>
+        ))}
+      </div>
+    </section>
+    <section class="shell detail-process">
+      <span class="eyebrow">/ A PROCESS OF EXPLORATION</span>
+      <div class="detail-process-grid">
+        {project.process.map((step, stepIndex) => (
+          <div class="detail-process-step">
+            <span class="detail-process-number">{String(stepIndex + 1).padStart(2, '0')}</span>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+    <section class="shell detail-result">
+      <span class="eyebrow">/ THE RESULT</span>
+      <p>{project.outcome}</p>
+    </section>
+    <a href={`/our-works/${next.slug}`} class="detail-next">
+      <span class="eyebrow">/ NEXT PROJECT</span>
+      <span class="detail-next-name">{next.name}<span class="detail-period">.</span></span>
+      <span class="detail-next-category">{next.category}</span>
+    </a>
+    <ClosingCTA />
+  </main>
+</BaseLayout>

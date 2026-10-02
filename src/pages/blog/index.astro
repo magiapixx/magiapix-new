@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ClosingCTA from '../../components/site/ClosingCTA.astro';
+import JournalGrid from '../../components/site/JournalGrid.astro';
+---
+
+<BaseLayout
+  title="Journal | Magiapix"
+  description="Thoughts on creative web development, brand visualization, and digital craft from Magiapix."
+>
+  <main>
+    <section class="page-intro shell">
+      <span class="eyebrow">/ THE JOURNAL</span>
+      <h1>Ideas worth <em>thinking about.</em></h1>
+      <p>Notes on digital craft, considered design, and the details that make a brand feel like itself.</p>
+    </section>
+    <section class="shell blog-page-grid"><JournalGrid /></section>
+    <ClosingCTA />
+  </main>
+</BaseLayout>
