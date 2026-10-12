@@ -50,30 +50,51 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toStri
       const revealSelectors = [
         '.intro-section > .shell > *',
         '.proof-copy > *',
-        '.proof-visuals img',
+        '.proof-visual',
         '.section-heading > *',
         '.work-item',
+        '.work-image',
         '.concept-note',
         '.motion-showcase',
+        '.motion-showcase__visual',
         '.service-lines > *',
         '.journal-item',
+        '.journal-image',
         '.page-intro > *',
         '.service-row',
+        '.service-image',
         '.process-step',
         '.about-wide-image',
         '.about-statement > *',
         '.about-principles-grid > *',
+        '.about-principles-image',
         '.detail-intro > *',
+        '.detail-hero-image',
         '.detail-content > *',
         '.detail-gallery figure',
+        '.detail-wide-image',
         '.detail-language > *',
         '.detail-keyword',
         '.detail-process-step',
         '.detail-result > *',
         '.detail-next > *',
+        '.article-hero-image',
         '.article-body > *',
         '.article-end > *',
         '.closing-inner > *',
+      ].join(',');
+      const visualSelectors = [
+        '.proof-visual',
+        '.work-image',
+        '.motion-showcase__visual',
+        '.journal-image',
+        '.service-image',
+        '.about-wide-image',
+        '.about-principles-image',
+        '.detail-hero-image',
+        '.detail-gallery-grid figure',
+        '.detail-wide-image',
+        '.article-hero-image',
       ].join(',');
 
       const revealPageContent = () => {
@@ -96,6 +117,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toStri
 
         elements.forEach((element, index) => {
           element.classList.add('reveal-item');
+          if (element.matches(visualSelectors)) element.classList.add('visual-zoom');
           const serviceIndex = element.parentElement?.matches('.service-lines')
             ? Array.from(element.parentElement.children).indexOf(element)
             : -1;
@@ -110,17 +132,18 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toStri
       revealPageContent();
       document.addEventListener('astro:page-load', revealPageContent);
     </script>
-    <script client:only="javascript">
+    <script>
       import Lenis from 'lenis';
 
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (!prefersReducedMotion) {
         const lenis = new Lenis({
-          duration: 1.6,
-          easing: [0.25, 0.1, 0.25, 1],
+          anchors: true,
+          lerp: 0.03,
+          stopInertiaOnNavigate: true,
         });
 
-        function raf(time) {
+        function raf(time: number) {
           lenis.raf(time);
           requestAnimationFrame(raf);
         }
