@@ -32,10 +32,10 @@ const activeLink = pathname.startsWith('/our-works')
         <a href="/services" class:nav-active={activeLink === '/services'}>Services</a>
         <a href="/about" class:nav-active={activeLink === '/about'}>About Us</a>
         <a href="/blog" class:nav-active={activeLink === '/blog'}>Journal</a>
+        <a class="studio-button" href="mailto:hello@magiapix.com?subject=Project%20enquiry">
+          Start a project <Icon name="arrow-right" size={14} />
+        </a>
       </nav>
-      <a class="studio-button" href="mailto:hello@magiapix.com?subject=Project%20enquiry">
-        Start a project <Icon name="arrow-right" size={14} />
-      </a>
     </div>
     <button
       class="mobile-menu"
@@ -52,6 +52,18 @@ const activeLink = pathname.startsWith('/our-works')
 </header>
 
 <script>
+  const setMenuOpen = (menu: HTMLButtonElement, isOpen: boolean) => {
+    menu.setAttribute('aria-expanded', String(isOpen));
+    menu.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    document.querySelector<HTMLElement>('#site-navigation')?.classList.toggle('site-nav--open', isOpen);
+    document.querySelector<HTMLElement>('.site-header')?.classList.toggle('site-header--menu-open', isOpen);
+    const openIcon = menu.querySelector<HTMLElement>('[data-menu-icon="open"]');
+    const closeIcon = menu.querySelector<HTMLElement>('[data-menu-icon="close"]');
+    if (openIcon) openIcon.hidden = isOpen;
+    if (closeIcon) closeIcon.hidden = !isOpen;
+    updateHeader();
+  };
+
   const updateHeader = () => {
     const header = document.querySelector<HTMLElement>('.site-header');
     const menu = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
@@ -64,19 +76,28 @@ const activeLink = pathname.startsWith('/our-works')
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Element)) return;
     const menu = event.target.closest<HTMLButtonElement>('[data-menu-toggle]');
-    if (!menu) return;
+    if (menu) {
+      setMenuOpen(menu, menu.getAttribute('aria-expanded') !== 'true');
+      return;
+    }
 
-    const isOpen = menu.getAttribute('aria-expanded') === 'true';
-    menu.setAttribute('aria-expanded', String(!isOpen));
-    menu.setAttribute('aria-label', isOpen ? 'Open menu' : 'Close menu');
-    document.querySelector<HTMLElement>('#site-navigation')?.classList.toggle('site-nav--open', !isOpen);
-    const openIcon = menu.querySelector<HTMLElement>('[data-menu-icon="open"]');
-    const closeIcon = menu.querySelector<HTMLElement>('[data-menu-icon="close"]');
-    if (openIcon) openIcon.hidden = !isOpen;
-    if (closeIcon) closeIcon.hidden = isOpen;
-    updateHeader();
+    const openMenu = document.querySelector<HTMLButtonElement>('[data-menu-toggle][aria-expanded="true"]');
+    if (openMenu && (!event.target.closest('.site-header') || event.target.closest('#site-navigation a'))) {
+      setMenuOpen(openMenu, false);
+    }
   });
 
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    const menu = document.querySelector<HTMLButtonElement>('[data-menu-toggle][aria-expanded="true"]');
+    if (menu) setMenuOpen(menu, false);
+  });
+
+  window.addEventListener('resize', () => {
+    if (window.innerWidth <= 800) return;
+    const menu = document.querySelector<HTMLButtonElement>('[data-menu-toggle][aria-expanded="true"]');
+    if (menu) setMenuOpen(menu, false);
+  });
   window.addEventListener('scroll', updateHeader, { passive: true });
   document.addEventListener('astro:page-load', updateHeader);
 </script>

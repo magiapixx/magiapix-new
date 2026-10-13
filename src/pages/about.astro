@@ -3,21 +3,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ClosingCTA from '../components/site/ClosingCTA.astro';
 import Icon from '../components/site/Icon.astro';
 import SectionHeading from '../components/site/SectionHeading.astro';
-import heroImage from '../assets/hero-coast.jpg';
-import formImage from '../assets/work-form.jpg';
+import codeImage from '../assets/unsplash-code-laptop.webp';
+import analyticsImage from '../assets/unsplash-analytics.webp';
 ---
 
 <BaseLayout
   title="About Us | Magiapix"
   description="Magiapix is a creative web development agency specializing in digital brand and business visualization for ambitious brands."
 >
-  <main>
+  <main class="about-page">
     <section class="page-intro shell">
       <span class="eyebrow">/ ABOUT MAGIAPIX</span>
       <h1>Digital craft for brands <em>that aim higher.</em></h1>
       <p>Magiapix is a creative web development agency that specializes in digital brand and business visualization.</p>
     </section>
-    <div class="about-wide-image"><img src={heroImage.src} alt="Atmospheric coastline and sculptural architecture" /></div>
+    <div class="about-wide-image"><img src={codeImage.src} alt="Laptop displaying source code in a dark editor" /></div>
     <section class="shell about-statement section-pad">
       <span class="eyebrow">/ OUR POINT OF VIEW</span>
       <div>
@@ -35,7 +35,7 @@ import formImage from '../assets/work-form.jpg';
           <div class="principle"><h3>A collaborative process.</h3><p>You're involved at every step, and nothing is left to guesswork.</p></div>
           <a class="text-link" href="/services">Explore our services <Icon name="arrow-right" size={17} /></a>
         </div>
-        <div class="about-principles-image"><img src={formImage.src} alt="Material and form study" loading="lazy" /></div>
+        <div class="about-principles-image"><img src={analyticsImage.src} alt="Analytics dashboard displayed on a laptop screen" loading="lazy" /></div>
       </div>
     </section>
     <ClosingCTA />

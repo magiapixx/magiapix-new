@@ -8,14 +8,63 @@ interface Props {
   title?: string;
   description?: string;
   type?: 'website' | 'article';
+  article?: {
+    publishedTime: string;
+    section: string;
+  };
 }
 
 const {
   title = 'Magiapix | Creative Web Development & Brand Visualization Agency',
   description = 'Magiapix is a creative web development studio crafting distinctive digital experiences for ambitious brands.',
   type = 'website',
+  article,
 } = Astro.props;
-const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toString();
+const siteUrl = Astro.site ?? Astro.url;
+const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
+const socialImageUrl = new URL('/social-preview.webp', siteUrl).toString();
+const structuredData = article
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: title,
+      description,
+      image: socialImageUrl,
+      datePublished: article.publishedTime,
+      author: {
+        '@type': 'Organization',
+        name: 'Magiapix',
+        url: siteUrl.toString(),
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Magiapix',
+        url: siteUrl.toString(),
+      },
+      articleSection: article.section,
+      mainEntityOfPage: canonicalUrl,
+    }
+  : Astro.url.pathname === '/'
+    ? {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'Organization',
+            '@id': new URL('/#organization', siteUrl).toString(),
+            name: 'Magiapix',
+            url: siteUrl.toString(),
+            description,
+          },
+          {
+            '@type': 'WebSite',
+            '@id': new URL('/#website', siteUrl).toString(),
+            name: 'Magiapix',
+            url: siteUrl.toString(),
+            publisher: { '@id': new URL('/#organization', siteUrl).toString() },
+          },
+        ],
+      }
+    : null;
 ---
 
 <!doctype html>
@@ -31,22 +80,156 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toStri
     <meta property="og:description" content={description} />
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Magiapix" />
+    <meta property="og:image" content={socialImageUrl} />
+    <meta property="og:image:alt" content="Laptop with software code and a digital design workspace" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageUrl} />
+    {article && <meta property="article:published_time" content={article.publishedTime} />}
+    {article && <meta property="article:section" content={article.section} />}
+    {structuredData && (
+      <script
+        type="application/ld+json"
+        set:html={JSON.stringify(structuredData).replace(/</g, '\\u003c')}
+      />
+    )}
     <ClientRouter />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&family=Geist:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400;1,500&family=Geist:wght@400;500;600;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600;1,700;1,800&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <SiteHeader pathname={Astro.url.pathname} />
-    <slot />
-    <SiteFooter />
+    <div class="page-transition-layout">
+      <SiteHeader pathname={Astro.url.pathname} />
+      <slot />
+      <SiteFooter />
+    </div>
     <script>
+      let cleanupIntroScrollReveal: (() => void) | undefined;
+
+      const setupIntroScrollReveal = () => {
+        cleanupIntroScrollReveal?.();
+        cleanupIntroScrollReveal = undefined;
+
+        const introCopy = document.querySelector<HTMLElement>('#introduction .intro-copy');
+        if (!introCopy) return;
+
+        const paragraphs = introCopy.querySelectorAll<HTMLElement>(':scope > p');
+        const paragraphWords: { paragraph: HTMLElement; words: HTMLElement[] }[] = [];
+
+        paragraphs.forEach((paragraph) => {
+          const words: HTMLElement[] = [];
+          const existingWords = paragraph.querySelectorAll<HTMLElement>('.intro-scroll-word');
+
+          if (existingWords.length) {
+            words.push(...existingWords);
+          } else {
+            const textNodes: Text[] = [];
+            const walker = document.createTreeWalker(paragraph, NodeFilter.SHOW_TEXT);
+
+            while (walker.nextNode()) {
+              if (walker.currentNode.textContent?.trim()) textNodes.push(walker.currentNode as Text);
+            }
+
+            textNodes.forEach((textNode) => {
+              const fragment = document.createDocumentFragment();
+              const parts = textNode.textContent?.match(/\s+|\S+/g) ?? [];
+
+              parts.forEach((part) => {
+                if (/^\s+$/.test(part)) {
+                  fragment.append(document.createTextNode(part));
+                  return;
+                }
+
+                const word = document.createElement('span');
+                word.className = 'intro-scroll-word';
+                word.textContent = part;
+                word.style.opacity = '0.1';
+                words.push(word);
+                fragment.append(word);
+              });
+
+              textNode.replaceWith(fragment);
+            });
+          }
+
+          paragraphWords.push({ paragraph, words });
+        });
+
+        const words = paragraphWords.flatMap(({ words: paragraphWordList }) => paragraphWordList);
+        if (!words.length) return;
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let wasReducedMotion = false;
+        const update = () => {
+          if (prefersReducedMotion.matches) {
+            if (!wasReducedMotion) words.forEach((word) => (word.style.opacity = '1'));
+            wasReducedMotion = true;
+            return;
+          }
+
+          if (wasReducedMotion) paragraphProgress.length = 0;
+          wasReducedMotion = false;
+          let previousEndScroll = window.scrollY;
+
+          paragraphWords.forEach(({ paragraph, words: paragraphWordList }, paragraphIndex) => {
+            const bounds = paragraph.getBoundingClientRect();
+            const documentTop = bounds.top + window.scrollY;
+            const startScroll = paragraphIndex === 0
+              ? documentTop - window.innerHeight * 0.92
+              : previousEndScroll;
+            const endScroll = documentTop + bounds.height - window.innerHeight * 0.25;
+            const progress = Math.min(1, Math.max(0, (window.scrollY - startScroll) / (endScroll - startScroll)));
+            const previousProgress = paragraphProgress[paragraphIndex];
+            if (previousProgress === undefined || Math.abs(progress - previousProgress) >= 0.001) {
+              paragraphProgress[paragraphIndex] = progress;
+              const revealedWords = progress * paragraphWordList.length;
+
+              paragraphWordList.forEach((word, index) => {
+                const reveal = Math.min(1, Math.max(0, revealedWords - index));
+                word.style.opacity = String(0.1 + reveal * 0.9);
+              });
+            }
+            previousEndScroll = endScroll;
+          });
+        };
+
+        let frame = 0;
+        const paragraphProgress: (number | undefined)[] = [];
+        const tick = () => {
+          update();
+          if (!prefersReducedMotion.matches) frame = window.requestAnimationFrame(tick);
+        };
+        const onMotionPreferenceChange = () => {
+          if (frame) window.cancelAnimationFrame(frame);
+          frame = 0;
+          update();
+          if (!prefersReducedMotion.matches) frame = window.requestAnimationFrame(tick);
+        };
+
+        prefersReducedMotion.addEventListener('change', onMotionPreferenceChange);
+        tick();
+
+        cleanupIntroScrollReveal = () => {
+          if (frame) window.cancelAnimationFrame(frame);
+          prefersReducedMotion.removeEventListener('change', onMotionPreferenceChange);
+        };
+      };
+
+      setupIntroScrollReveal();
+      document.addEventListener('astro:page-load', setupIntroScrollReveal);
+      document.addEventListener('astro:before-swap', () => {
+        cleanupIntroScrollReveal?.();
+        cleanupIntroScrollReveal = undefined;
+      });
+
       const revealSelectors = [
         '.intro-section > .shell > *',
         '.proof-copy > *',
@@ -103,11 +286,13 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toStri
 
         const elements = document.querySelectorAll<HTMLElement>(revealSelectors);
         if (elements.length === 0) return;
+        const aboutRevealElements: HTMLElement[] = [];
 
         const observer = new IntersectionObserver(
           (entries, currentObserver) => {
             entries.forEach((entry) => {
               if (!entry.isIntersecting) return;
+              entry.target.classList.remove('about-reveal-pending');
               entry.target.classList.add('is-visible');
               currentObserver.unobserve(entry.target);
             });
@@ -116,8 +301,14 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toStri
         );
 
         elements.forEach((element, index) => {
+          const isAboutElement = element.closest('.about-page') !== null;
           element.classList.add('reveal-item');
           if (element.matches(visualSelectors)) element.classList.add('visual-zoom');
+          if (isAboutElement) {
+            element.classList.add('about-reveal-pending');
+            element.style.transition = 'none';
+            aboutRevealElements.push(element);
+          }
           const serviceIndex = element.parentElement?.matches('.service-lines')
             ? Array.from(element.parentElement.children).indexOf(element)
             : -1;
@@ -125,6 +316,12 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toStri
           element.style.setProperty('--reveal-delay', `${delay}ms`);
           observer.observe(element);
         });
+
+        if (aboutRevealElements.length) {
+          window.requestAnimationFrame(() => {
+            aboutRevealElements.forEach((element) => element.style.removeProperty('transition'));
+          });
+        }
 
         document.documentElement.classList.add('motion-ready');
       };
@@ -139,7 +336,7 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url).toStri
       if (!prefersReducedMotion) {
         const lenis = new Lenis({
           anchors: true,
-          lerp: 0.03,
+          lerp: 0.1,
           stopInertiaOnNavigate: true,
         });
 

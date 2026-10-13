@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="48" y1="0" x2="1150" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#303432"/>
+      <stop offset="1" stop-color="#101311"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="670" y1="108" x2="1120" y2="540" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F3F0E9"/>
+      <stop offset="1" stop-color="#D9D6CE"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h1200v630H0z"/>
+  <circle cx="1115" cy="88" r="298" fill="#C9B798" fill-opacity=".08"/>
+  <circle cx="375" cy="690" r="315" fill="#9EA99F" fill-opacity=".06"/>
+  <text x="68" y="96" fill="#F3F0E9" font-family="Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="-1.5">magiapix</text>
+  <circle cx="181" cy="89" r="4" fill="#C9B798"/>
+  <path fill="#B7B9B1" d="M69 132h367v8H69z"/>
+  <path fill="#B7B9B1" d="M69 151h294v8H69z"/>
+  <text x="66" y="282" fill="#F4F1EC" font-family="Arial, sans-serif" font-size="64" font-weight="600" letter-spacing="-3">Where ambitious</text>
+  <text x="66" y="357" fill="#E2D7C6" font-family="Georgia, serif" font-size="69" font-style="italic" letter-spacing="-3">brands become</text>
+  <text x="66" y="432" fill="#E2D7C6" font-family="Georgia, serif" font-size="69" font-style="italic" letter-spacing="-3">unforgettable.</text>
+  <path fill="#C9B798" d="M70 485h42v2H70z"/>
+  <text x="70" y="516" fill="#D9D7D0" font-family="Arial, sans-serif" font-size="12" font-weight="600" letter-spacing="2">CREATIVE WEB DEVELOPMENT</text>
+  <text x="70" y="540" fill="#D9D7D0" font-family="Arial, sans-serif" font-size="12" font-weight="600" letter-spacing="2">BRAND VISUALIZATION</text>
+  <path fill="#080A09" fill-opacity=".3" d="M560 103h585v430H560z"/>
+  <path fill="url(#screen)" d="M540 83h585v430H540z"/>
+  <path fill="#E8E5DE" d="M540 83h585v32H540z"/>
+  <circle cx="558" cy="99" r="4" fill="#B77C6B"/>
+  <circle cx="573" cy="99" r="4" fill="#C8AC7D"/>
+  <circle cx="588" cy="99" r="4" fill="#78917D"/>
+  <path fill="#272C29" d="M540 115h105v398H540z"/>
+  <path fill="#EEECE5" d="M556 133h72v18h-72z"/>
+  <path fill="#8F9188" d="M558 173h10v10h-10zM558 197h10v10h-10zM558 221h10v10h-10z"/>
+  <path fill="#CCCEC6" d="M576 175h49v5h-49zM576 199h42v5h-42zM576 223h47v5h-47z"/>
+  <path fill="#F5F2EB" d="M666 136h429v45H666z"/>
+  <path fill="#343936" d="M685 151h171v9H685z"/>
+  <path fill="#83867D" d="M685 167h114v4H685z"/>
+  <path fill="#B0B5A9" d="M666 194h261v169H666z"/>
+  <path fill="#768477" d="M666 311c46-54 83-62 121-24 37-65 89-51 140-3v79H666z"/>
+  <circle cx="851" cy="262" r="39" fill="#D6C8B0" fill-opacity=".82"/>
+  <path fill="#F4F1EA" d="M940 194h155v169H940z"/>
+  <path fill="#383E39" d="M956 210h106v8H956z"/>
+  <path fill="#92938B" d="M956 229h123v5H956zM956 243h103v5H956z"/>
+  <path fill="#D8D5CC" d="M956 265h122v72H956z"/>
+  <path fill="#47554A" d="M967 322c20-31 39-36 56-14 17-35 31-27 44-2v31H967z"/>
+  <path fill="#F0EDE6" d="M666 379h429v112H666z"/>
+  <path fill="#373D39" d="M685 396h122v8H685z"/>
+  <path fill="#A3A59D" d="M685 416h371v4H685zM685 429h329v4H685z"/>
+  <path fill="#D1CEC5" d="M685 447h114v26H685zM811 447h114v26H811zM937 447h119v26H937z"/>
+  <path fill="#81877D" d="M697 457h65v6h-65zM823 457h73v6h-73zM949 457h60v6h-60z"/>
+  <path fill="#E0D6C6" d="M959 500h146v13H959z"/>
+  <path fill="#DDD9D0" d="M967 504h93v5h-93z"/>
+</svg>

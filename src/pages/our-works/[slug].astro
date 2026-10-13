@@ -29,7 +29,7 @@ const next = projects[(index + 1) % projects.length];
       <h1>{project.name}<span class="detail-period">.</span></h1>
       <p>{project.tagline}</p>
     </section>
-    <div class="detail-hero-image"><img src={project.image.src} alt={`${project.name} visual direction`} /></div>
+    <div class="detail-hero-image"><img src={project.image.src} alt={`${project.name} concept study reference photo`} /></div>
     <section class="shell detail-content">
       <div class="detail-aside">
         <span class="eyebrow">PROJECT DETAILS</span>
@@ -50,7 +50,7 @@ const next = projects[(index + 1) % projects.length];
     <section class="shell detail-gallery">
       <div class="detail-gallery-grid">
         {project.gallery.map((image, imageIndex) => (
-          <figure><img src={image.src} alt={`${project.name} study ${imageIndex + 1}`} /></figure>
+          <figure><img src={image.src} alt={`${project.name} concept study reference photo ${imageIndex + 1}`} /></figure>
         ))}
       </div>
     </section>
@@ -60,7 +60,7 @@ const next = projects[(index + 1) % projects.length];
         images={[project.image, ...project.gallery, project.wideImage]}
       />
     </section>
-    <div class="detail-wide-image"><img src={project.wideImage.src} alt={`${project.name} atmosphere`} /></div>
+    <div class="detail-wide-image"><img src={project.wideImage.src} alt={`${project.name} concept study reference photo`} /></div>
     <section class="shell detail-language">
       <span class="eyebrow">/ A VISUAL LANGUAGE OF {project.name.split(' ')[0].toUpperCase()}</span>
       <div class="detail-language-grid">
